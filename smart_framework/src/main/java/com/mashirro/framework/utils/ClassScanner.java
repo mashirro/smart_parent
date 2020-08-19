@@ -1,6 +1,7 @@
 package com.mashirro.framework.utils;
 
 
+import com.mashirro.framework.annotation.Action;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -183,7 +184,9 @@ public class ClassScanner {
      */
     public static void main(String[] args) throws IOException {
         ClassScanner classScanner = new ClassScanner("com.mashirro.framework.cache", null);
-        classScanner.scan();
-        System.out.println(classScanner.classes);
+        System.out.println(classScanner.scan());
+        System.out.println("----------------------------------------");
+        Set<Class<?>> classes = ClassUtil.scanPackageByAnnotation("com.mashirro.framework.cache", Action.class);
+        System.out.println(classes);
     }
 }

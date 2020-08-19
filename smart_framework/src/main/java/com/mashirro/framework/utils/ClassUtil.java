@@ -1,6 +1,7 @@
 package com.mashirro.framework.utils;
 
 
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.util.Set;
 
@@ -18,9 +19,14 @@ public class ClassUtil {
      * @param annotationClass
      * @return
      */
-    public static Set<Class<?>> scanPackageByAnnotation(String packageName, final Class<? extends Annotation> annotationClass) {
-        //return scanPackage()
-        return null;
+    public static Set<Class<?>> scanPackageByAnnotation(String packageName, final Class<? extends Annotation> annotationClass) throws IOException {
+        return new ClassScanner(packageName, new Filter<Class<?>>() {
+            @Override
+            public boolean accept(Class<?> clazz) {
+                //如果此元素上存在指定annotation 类型的annotation，则为true，否则为false
+                return clazz.isAnnotationPresent(annotationClass);
+            }
+        }).scan();
     }
 
 
@@ -30,10 +36,9 @@ public class ClassUtil {
      * @param packageName
      * @return
      */
-    public static Set<Class<?>> scanPackage(String packageName) {
-        return null;
+    public static Set<Class<?>> scanPackage(String packageName) throws IOException {
+        return new ClassScanner(packageName, null).scan();
     }
-
 
 
 }
