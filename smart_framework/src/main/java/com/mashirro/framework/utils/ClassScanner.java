@@ -51,7 +51,6 @@ public class ClassScanner {
 
     }
 
-
     /**
      * 扫描包路径下满足class过滤器条件的所有class文件
      *
@@ -164,8 +163,15 @@ public class ClassScanner {
     private void scanJar(JarFile jarFile) {
         //返回zip文件项的枚举。
         Enumeration<JarEntry> jarEntries = jarFile.entries();
-        while (jarEntries.hasMoreElements()){
+        while (jarEntries.hasMoreElements()) {
             JarEntry jarEntry = jarEntries.nextElement();
+            String name = jarEntry.getName();
+            if (name.endsWith(".class") && !jarEntry.isDirectory()) {    //以.class结尾并且不是目录
+                //减6是因为去掉".class"
+                final String className = name.substring(0, name.length() - 6).replace(File.separatorChar, DOT);
+                //加载满足条件的类
+                addIfAccpet(className);
+            }
 
         }
     }
@@ -177,7 +183,6 @@ public class ClassScanner {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        //往com.mashirro.framework.cache下面丢一个jar包试一下效果
         ClassScanner classScanner = new ClassScanner("com.mashirro.framework.cache", null);
         classScanner.scan();
         System.out.println(classScanner.classes);
