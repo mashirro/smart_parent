@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -72,7 +70,8 @@ public class ClassScanner {
                     break;
             }
         }
-        return null;
+        //返回一个不可修改的set集合
+        return Collections.unmodifiableSet(classes);
     }
 
 
