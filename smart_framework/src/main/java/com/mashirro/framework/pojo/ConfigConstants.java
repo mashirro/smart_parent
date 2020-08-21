@@ -19,12 +19,15 @@ public class ConfigConstants {
     public static final String JDBC_URL = "jdbc.url";
 
     //jdbc_driver
-    public static final String JDBC_DRIVER= "jdbc.driver";
+    public static final String JDBC_DRIVER = "jdbc.driver";
 
     //jdbc_username
     public static final String JDBC_USERNAME = "jdbc.username";
 
     //jdbc_password
     public static final String JDBC_PASSWORD = "jdbc.password";
+
+    //暂时先写死,后面在写到配置文件中去
+    public static final String APP_BASE_PACKAGE = "com.mashirro";
 
 }
