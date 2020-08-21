@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -62,6 +61,7 @@ public class DatabaseUtil {
             } catch (SQLException e) {
                 logger.error("获取数据库连接出现异常!", e);
                 e.printStackTrace();
+                throw new RuntimeException("获取数据库连接出现异常!", e);
             } finally {
                 CONNECTION_HOLDER.set(coon);
             }
@@ -137,14 +137,14 @@ public class DatabaseUtil {
      * @return
      */
     public static <T> List<T> queryEntityList(Class<T> entityClass, String sql, Object... params) {
-        List<T> entityList = new ArrayList<>();
+        List<T> entityList;
         try {
             Connection coon = getConnection();
             entityList = QUERY_RUNNER.query(coon, sql, new BeanListHandler<T>(entityClass), params);
         } catch (SQLException e) {
             logger.error("查询实体列表出错!", e);
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException("查询实体列表出错!", e);
         }
         return entityList;
     }
@@ -160,7 +160,7 @@ public class DatabaseUtil {
      * @return
      */
     public static <T> T queryEntity(Class<T> entityClass, String sql, Object... params) {
-        T entity = null;
+        T entity;
         try {
             Connection coon = getConnection();
             //BeanHandler:返回bean对象
@@ -168,7 +168,7 @@ public class DatabaseUtil {
         } catch (Exception e) {
             logger.error("查询实体失败!");
             e.printStackTrace();
-            throw new RuntimeException(e);
+            throw new RuntimeException("查询实体失败!", e);
         }
         return entity;
     }
@@ -182,13 +182,14 @@ public class DatabaseUtil {
      * @return
      */
     public static List<Map<String, Object>> executeQuery(String sql, Object... params) {
-        List<Map<String, Object>> result = new ArrayList<>();
+        List<Map<String, Object>> result;
         try {
             Connection coon = getConnection();
             result = QUERY_RUNNER.query(coon, sql, new MapListHandler(), params);
         } catch (Exception e) {
             logger.error("executeQuery执行异常!");
             e.printStackTrace();
+            throw new RuntimeException("executeQuery执行异常!", e);
         }
         return result;
     }

@@ -13,6 +13,9 @@ public class ClassLoaderUtil {
 
     private static final Logger logger = LoggerFactory.getLogger(ClassLoaderUtil.class);
 
+    /**
+     * 简单缓存,WeakHashMap,key是类名,value是class对象
+     */
     private static final SimpleCache<String, Class<?>> classCache = new SimpleCache<>();
 
 
@@ -33,7 +36,7 @@ public class ClassLoaderUtil {
      * @return
      * @throws Exception
      */
-    public static Class<?> loadClass(String name) throws Exception {
+    public static Class<?> loadClass(String name) throws ClassNotFoundException {
         return loadClass(name, null, true);
     }
 
@@ -48,7 +51,7 @@ public class ClassLoaderUtil {
      * @return 类名对应的类
      * @throws Exception
      */
-    public static Class<?> loadClass(String name, ClassLoader classLoader, boolean isInitialized) throws Exception {
+    public static Class<?> loadClass(String name, ClassLoader classLoader, boolean isInitialized) throws ClassNotFoundException {
         if (StringUtils.isEmpty(name)) {
             logger.error("Name must not be empty");
             throw new IllegalArgumentException("Name must not be empty");
@@ -74,7 +77,7 @@ public class ClassLoaderUtil {
      *
      * @param args
      */
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws ClassNotFoundException {
         Class<?> clazz = loadClass("com.mashirro.framework.pojo.ConfigConstants");
         System.out.println(clazz);
     }

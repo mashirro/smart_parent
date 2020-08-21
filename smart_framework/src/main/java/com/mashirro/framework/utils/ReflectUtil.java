@@ -43,7 +43,7 @@ public class ReflectUtil {
      * @throws Exception
      */
     @SuppressWarnings("unchecked")
-    public static <T> T invoke(Object obj, Method method, Object... args) throws Exception {
+    public static <T> T invoke(Object obj, Method method, Object... args) {
         //设置方法为可访问
         setAccessible(method);
         try {
@@ -77,7 +77,7 @@ public class ReflectUtil {
      * @param value 值
      * @throws UtilException
      */
-    public static void setFieldValue(Object obj, Field field, Object value) throws Exception {
+    public static void setFieldValue(Object obj, Field field, Object value) {
         //设置字段为可访问
         setAccessible(field);
         try {

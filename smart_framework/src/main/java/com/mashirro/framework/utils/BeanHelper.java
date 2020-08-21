@@ -7,7 +7,6 @@ import com.mashirro.framework.pojo.ConfigConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -32,17 +31,13 @@ public class BeanHelper {
 
     //静态代码块
     static {
-        try {
-            //扫描指定包路径下包含Controller和Service注解的类
-            BEAN_CLASS_SET.addAll(ClassUtil.scanPackageByAnnotation(ConfigConstants.APP_BASE_PACKAGE, Controller.class));
-            BEAN_CLASS_SET.addAll(ClassUtil.scanPackageByAnnotation(ConfigConstants.APP_BASE_PACKAGE, Service.class));
-            for (Class<?> beanClass : BEAN_CLASS_SET) {
-                //创建实例
-                Object o = ReflectUtil.newInstance(beanClass);
-                BEAN_MAP.put(beanClass, o);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+        //扫描指定包路径下包含Controller和Service注解的类
+        BEAN_CLASS_SET.addAll(ClassUtil.scanPackageByAnnotation(ConfigConstants.APP_BASE_PACKAGE, Controller.class));
+        BEAN_CLASS_SET.addAll(ClassUtil.scanPackageByAnnotation(ConfigConstants.APP_BASE_PACKAGE, Service.class));
+        for (Class<?> beanClass : BEAN_CLASS_SET) {
+            //创建实例
+            Object o = ReflectUtil.newInstance(beanClass);
+            BEAN_MAP.put(beanClass, o);
         }
     }
 
@@ -67,7 +62,7 @@ public class BeanHelper {
     @SuppressWarnings("unchecked")
     public static <T> T getBean(Class<T> clazz) {
         if (!BEAN_MAP.containsKey(clazz)) {
-            throw new RuntimeException("can not get bean by class: " + clazz);
+            throw new RuntimeException("获取Bean实例出现异常!");
         } else {
             return ((T) BEAN_MAP.get(clazz));
         }

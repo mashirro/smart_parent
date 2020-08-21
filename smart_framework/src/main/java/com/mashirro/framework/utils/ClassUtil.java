@@ -21,7 +21,7 @@ public class ClassUtil {
      * @param annotationClass
      * @return
      */
-    public static Set<Class<?>> scanPackageByAnnotation(String packageName, final Class<? extends Annotation> annotationClass) throws IOException {
+    public static Set<Class<?>> scanPackageByAnnotation(String packageName, final Class<? extends Annotation> annotationClass) {
 //        return new ClassScanner(packageName, new Filter<Class<?>>() {
 //            @Override
 //            public boolean accept(Class<?> clazz) {
@@ -31,7 +31,14 @@ public class ClassUtil {
 //        }).scan();
 
         //可使用lambda表达式
-        return new ClassScanner(packageName, clazz -> clazz.isAnnotationPresent(annotationClass)).scan();
+        Set<Class<?>> classes;
+        try {
+            classes = new ClassScanner(packageName, clazz -> clazz.isAnnotationPresent(annotationClass)).scan();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("扫描指定包路径下所有包含指定注解的类出现异常!", e);
+        }
+        return classes;
     }
 
 
@@ -41,8 +48,15 @@ public class ClassUtil {
      * @param packageName
      * @return
      */
-    public static Set<Class<?>> scanPackage(String packageName) throws IOException {
-        return new ClassScanner(packageName, null).scan();
+    public static Set<Class<?>> scanPackage(String packageName) {
+        Set<Class<?>> classes;
+        try {
+            classes = new ClassScanner(packageName, null).scan();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("扫描指定包路径下所有类出现异常!", e);
+        }
+        return classes;
     }
 
 
